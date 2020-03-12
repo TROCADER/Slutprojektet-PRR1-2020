@@ -15,7 +15,9 @@ namespace Slutprojektet_PRR1_2020
             Console.WriteLine("\nHär kommer du att finna stora chanser att vinna stort och 'små' risker att förlora stort");
             Console.WriteLine("\nVälj det spel ni vill spela:\n");
 
-            ChooseGame();
+            //ChooseGame();
+
+            PlayBlackJack();
 
             Console.ReadLine();
         }
@@ -37,9 +39,9 @@ namespace Slutprojektet_PRR1_2020
             int.TryParse(Console.ReadLine().Trim(), out int playerInput);
 
             //Fixa smart kod genom DRY här:
-            while (playerInput != 1 && playerInput != 2)
+            while (playerInput != 1 /*&& playerInput != 2*/)
             {
-                Console.WriteLine("Du har valt ett spel som inte existerar, vänligen välj igen");
+                Console.WriteLine("Du har valt ett spel som inte existerar eller är under konstruktion, vänligen välj igen");
                 int.TryParse(Console.ReadLine().Trim(), out playerInput);
             }
 
@@ -53,6 +55,92 @@ namespace Slutprojektet_PRR1_2020
                 Console.Clear();
 
                 BlackJack();
+            }
+        }
+
+        static void PlayBlackJack()
+        {
+            Random generator = new Random();
+
+            int playerPoints = 0;
+            int dealerPoints = 0;
+
+            int playerCard = 0;
+            int dealerCard = 0;
+
+            bool isHitting = false;
+
+            while (playerPoints < 21 && playerPoints < 21)
+            {
+                string[] options =
+                {
+                    "1: Hit",
+                    "2: Stand"
+                };
+                
+                playerCard = generator.Next(1, 11);
+                dealerCard = generator.Next(1, 11);
+
+                playerPoints = playerPoints + playerCard;
+                dealerPoints = dealerPoints + dealerCard;
+
+                Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
+                Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
+
+                Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
+                Console.WriteLine("Dealern har nu " + dealerPoints + " värt i kort");
+
+                Console.WriteLine("\n\nVad vill du göra?");
+
+                for (int i = 0; i < options.Length; i++)
+                {
+                    Console.WriteLine(options[i]);
+                }
+
+                int.TryParse(Console.ReadLine().Trim(), out int playerInput);
+
+                while (playerInput != 1 && playerInput != 2)
+                {
+                    Console.WriteLine("Du har valt ett ogitigt alternativ, vänligen välj igen");
+                    int.TryParse(Console.ReadLine().Trim(), out playerInput);
+                }
+
+                if (playerInput == 1)
+                {
+                    isHitting = true;
+
+                    while (isHitting == true)
+                    {
+                        playerCard = generator.Next(1, 11);
+                        playerPoints = playerPoints + playerCard;
+
+                        Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
+                        Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
+
+                        Console.WriteLine("Vill du fortsätta hit:a?");
+                        Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
+
+                        string playerChoose = Console.ReadLine().Trim().ToLower();
+
+                        while (playerChoose != "n" && playerChoose != "y")
+                        {
+                            Console.WriteLine("\nDu har valt ett ogiltigt alternativ, vänligen försök igen");
+                            playerChoose = Console.ReadLine().Trim().ToLower();
+                        }
+
+                        if (playerChoose == "n")
+                        {
+                            isHitting = false;
+                        }
+                    }
+                }
+
+                Console.WriteLine("\nDealern kommer nu att börja dra kort");
+
+                while (dealerPoints < 21)
+                {
+
+                }
             }
         }
 
@@ -74,11 +162,20 @@ namespace Slutprojektet_PRR1_2020
                 Console.WriteLine(options[i]);
             }
 
-            PlayerChoose();
+            int.TryParse(Console.ReadLine().Trim(), out int playerInput);
 
-            if ()
+            //Fixa smart kod genom DRY här:
+            while (playerInput != 1 /*&& playerInput != 2*/)
             {
+                Console.WriteLine("Du har valt ett ogiltigt alternativ, vänligen välj igen");
+                int.TryParse(Console.ReadLine().Trim(), out playerInput);
+            }
 
+            if (playerInput == 1)
+            {
+                Console.WriteLine("Du har valt: " + options[0]);
+                Console.WriteLine("\nSpelet kommer nu att starta");
+                Console.Clear();
             }
 
             Console.WriteLine();
@@ -86,6 +183,8 @@ namespace Slutprojektet_PRR1_2020
 
         static void LoadGame()
         {
+            Console.Clear();
+
             Thread.Sleep(500);
             Console.WriteLine("Loading game, please wait...");
 
@@ -103,13 +202,6 @@ namespace Slutprojektet_PRR1_2020
             }
 
             Console.Clear();
-        }
-
-        static int PlayerChoose()
-        {
-            int.TryParse(Console.ReadLine().Trim(), out int result);
-
-            return result;
         }
     }   
 }
