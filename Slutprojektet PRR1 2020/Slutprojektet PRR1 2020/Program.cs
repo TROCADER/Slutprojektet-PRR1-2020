@@ -69,8 +69,9 @@ namespace Slutprojektet_PRR1_2020
             int dealerCard = 0;
 
             bool isHitting = false;
+            bool drawingCards = true;
 
-            while (playerPoints < 21 && playerPoints < 21)
+            while (playerPoints < 21 && playerPoints < 21 && drawingCards == true)
             {
                 string[] options =
                 {
@@ -135,12 +136,25 @@ namespace Slutprojektet_PRR1_2020
                     }
                 }
 
-                Console.WriteLine("\nDealern kommer nu att börja dra kort");
+                Console.WriteLine("\nDealern kommer nu att börja dra kort\n");
 
-                while (dealerPoints < 21)
+                while (dealerPoints < 21 && dealerPoints < playerPoints)
                 {
+                    dealerCard = generator.Next(1, 11);
+                    dealerPoints = dealerPoints + dealerCard;
 
+                    Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
+                    Console.WriteLine("\nDealern har nu " + dealerPoints + " värt i kort");
+
+                    Thread.Sleep(1000);
                 }
+
+                if (dealerPoints > 21)
+                {
+                    Console.WriteLine("Dealern bustade");
+                }
+
+                drawingCards = false;
             }
         }
 
