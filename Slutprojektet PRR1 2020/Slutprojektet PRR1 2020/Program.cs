@@ -9,15 +9,23 @@ namespace Slutprojektet_PRR1_2020
 {
     class Program
     {
+        static Random generator = new Random();
+
+        static int playerPoints = 0;
+        static int dealerPoints = 0;
+
+        static int playerCard = 0;
+        static int dealerCard = 0;
+
+        
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hej och välkommen till William Casino");
             Console.WriteLine("\nHär kommer du att finna stora chanser att vinna stort och 'små' risker att förlora stort");
             Console.WriteLine("\nVälj det spel ni vill spela:\n");
 
-            //ChooseGame();
-
-            PlayBlackJack();
+            ChooseGame();
 
             Console.ReadLine();
         }
@@ -62,12 +70,6 @@ namespace Slutprojektet_PRR1_2020
         {
             Random generator = new Random();
 
-            int playerPoints = 0;
-            int dealerPoints = 0;
-
-            int playerCard = 0;
-            int dealerCard = 0;
-
             bool isHitting = false;
             bool drawingCards = true;
 
@@ -78,18 +80,8 @@ namespace Slutprojektet_PRR1_2020
                     "1: Hit",
                     "2: Stand"
                 };
-                
-                playerCard = generator.Next(1, 11);
-                dealerCard = generator.Next(1, 11);
 
-                playerPoints = playerPoints + playerCard;
-                dealerPoints = dealerPoints + dealerCard;
-
-                Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
-                Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
-
-                Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
-                Console.WriteLine("Dealern har nu " + dealerPoints + " värt i kort");
+                DrawCard();
 
                 Console.WriteLine("\n\nVad vill du göra?");
 
@@ -110,7 +102,7 @@ namespace Slutprojektet_PRR1_2020
                 {
                     isHitting = true;
 
-                    while (isHitting == true)
+                    while (isHitting == true && playerPoints < 21)
                     {
                         playerCard = generator.Next(1, 11);
                         playerPoints = playerPoints + playerCard;
@@ -136,6 +128,12 @@ namespace Slutprojektet_PRR1_2020
                     }
                 }
 
+                else
+                {
+                    Console.WriteLine("Du har valt att stand:a, dealern kommer strax att börja dra kort");
+                    Thread.Sleep(2000);
+                }
+
                 Console.WriteLine("\nDealern kommer nu att börja dra kort\n");
 
                 while (dealerPoints < 21 && dealerPoints < playerPoints)
@@ -151,7 +149,14 @@ namespace Slutprojektet_PRR1_2020
 
                 if (dealerPoints > 21)
                 {
-                    Console.WriteLine("Dealern bustade");
+                    Console.WriteLine("\n\nDealern bustade");
+                    Console.WriteLine("\nDu vann omgången!");
+                }
+
+                else
+                {
+                    Console.WriteLine("\n\nDealern fick mer mer poäng än dig!");
+                    Console.WriteLine("\nDealern vann omgången!");
                 }
 
                 drawingCards = false;
@@ -190,6 +195,8 @@ namespace Slutprojektet_PRR1_2020
                 Console.WriteLine("Du har valt: " + options[0]);
                 Console.WriteLine("\nSpelet kommer nu att starta");
                 Console.Clear();
+
+                PlayBlackJack();
             }
 
             Console.WriteLine();
@@ -216,6 +223,36 @@ namespace Slutprojektet_PRR1_2020
             }
 
             Console.Clear();
+        }
+
+        static void DrawCard()
+        {
+            playerCard = generator.Next(1, 11);
+            dealerCard = generator.Next(1, 11);
+
+            playerPoints = playerPoints + playerCard;
+            dealerPoints = dealerPoints + dealerCard;
+
+            Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
+            Thread.Sleep(500);
+            Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
+            Thread.Sleep(500);
+
+            playerCard = generator.Next(1, 11);
+            dealerCard = generator.Next(1, 11);
+
+            playerPoints = playerPoints + playerCard;
+            dealerPoints = dealerPoints + dealerCard;
+
+            Console.WriteLine("\nDealern ger dig ett kort, det är värt " + playerCard);
+            Thread.Sleep(500);
+            Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
+            Thread.Sleep(500);
+
+            Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
+            Thread.Sleep(500);
+            Console.WriteLine("\nDealern har nu " + dealerPoints + " värt i kort");
+            Thread.Sleep(500);
         }
     }   
 }
