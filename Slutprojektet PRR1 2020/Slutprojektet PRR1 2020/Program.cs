@@ -27,14 +27,15 @@ namespace Slutprojektet_PRR1_2020
 
             ChooseGame();
 
-            Console.ReadLine();
+            Console.WriteLine("Klicka på valfi knapp för att avsluta");
+            Console.ReadKey();
         }
         static void ChooseGame()
         {
             string[] games =
             {
                 "1: Blackjack",
-                "2: Roulette"
+                "2: Roulette (inte gjorts, finns här som anternativ för enkel utbyggning programmet"
             };
 
             for (int i = 0; i < games.Length; i++)
@@ -75,7 +76,13 @@ namespace Slutprojektet_PRR1_2020
 
             int[] bettableAmmount =
             {
-                1, 100, 1000, 10000, 100000, 1000000
+                0,
+                1,
+                100,
+                1000,
+                10000,
+                100000,
+                1000000
             };
 
             while (playerPoints < 21 && playerPoints < 21 && drawingCards == true && money > 0)
@@ -96,35 +103,9 @@ namespace Slutprojektet_PRR1_2020
                     userInput = Console.ReadLine().Trim().ToLower();
                 }
 
-                if (StringToInt(userInput) == 1)
-                {
-                    money = money - bettableAmmount[0];
-                }
+                int.TryParse(userInput, out int userInputInt);
 
-                else if (StringToInt(userInput) == 2)
-                {
-                    money = money - bettableAmmount[1];
-                }
-
-                else if (StringToInt(userInput) == 3)
-                {
-                    money = money - bettableAmmount[2];
-                }
-
-                else if (StringToInt(userInput) == 4)
-                {
-                    money = money - bettableAmmount[3];
-                }
-
-                else if (StringToInt(userInput) == 5)
-                {
-                    money = money - bettableAmmount[4];
-                }
-
-                else if (StringToInt(userInput) == 6)
-                {
-                    money = money - bettableAmmount[5];
-                }
+                money = money - bettableAmmount[userInputInt];
 
                 Console.WriteLine("\nDu har: " + money + " pengar kvar");
                 Thread.Sleep(1500);
@@ -158,8 +139,13 @@ namespace Slutprojektet_PRR1_2020
                 {
                     isHitting = true;
 
-                    while (isHitting == true && playerPoints < 21)
+                    while (isHitting == true)
                     {
+                        if (playerPoints >= 21)
+                        {
+                            isHitting = false;
+                        }
+                        
                         playerCard = generator.Next(1, 11);
                         playerPoints = playerPoints + playerCard;
 
@@ -194,45 +180,24 @@ namespace Slutprojektet_PRR1_2020
                 {
                     Console.WriteLine("Du har valt att double up:a, det belopp du bettade kommer nu att dubblas");
 
-                    if (StringToInt(userInput) == 1)
-                    {
-                        money = money - bettableAmmount[0];
-                    }
+                    int.TryParse(userInput, out userInputInt);
 
-                    else if (StringToInt(userInput) == 2)
-                    {
-                        money = money - bettableAmmount[1];
-                    }
+                    money = money - bettableAmmount[userInputInt];
 
-                    else if (StringToInt(userInput) == 3)
-                    {
-                        money = money - bettableAmmount[2];
-                    }
+                    Console.WriteLine("Du har : " + money + " kvar");
 
-                    else if (StringToInt(userInput) == 4)
-                    {
-                        money = money - bettableAmmount[3];
-                    }
-
-                    else if (StringToInt(userInput) == 5)
-                    {
-                        money = money - bettableAmmount[4];
-                    }
-
-                    else if (StringToInt(userInput) == 6)
-                    {
-                        money = money - bettableAmmount[5];
-                    }
-
-                    Console.WriteLine(money);
-
-                    Thread.Sleep(500);
+                    Thread.Sleep(2000);
 
                     Console.Clear();
                     isHitting = true;
 
-                    while (isHitting == true && playerPoints < 21)
+                    while (isHitting == true)
                     {
+                        if (playerPoints >= 21)
+                        {
+                            isHitting = false;
+                        }
+
                         playerCard = generator.Next(1, 11);
                         playerPoints = playerPoints + playerCard;
 
@@ -276,6 +241,8 @@ namespace Slutprojektet_PRR1_2020
                 {
                     Console.WriteLine("\n\nDealern bustade");
                     Console.WriteLine("\nDu vann omgången!");
+                    money = PlayerWin(money);
+                    Console.WriteLine(money);
                 }
 
                 else
@@ -286,6 +253,31 @@ namespace Slutprojektet_PRR1_2020
 
                 drawingCards = false;
             }
+        }
+
+        static void HowToPlayBlackjack()
+        {
+            string[] info =
+            {
+                "Du kommer nu att lära dig hur man spelar!",
+                "\nSpelet börjar med attt dealern drar 1 kort till dig och ett kort till sig själv, detta upprepas 1 gång.",
+                "\nEfter detta har du möjligheten att kunna göra följande: 'Stand', 'Hit eller 'Double down'",
+                "\nOm du väljer 'Stand' kommer du inte få fler kort, utan kommer under restan av spelets gång att bara ha de kort du har för tillfället.",
+                "Dealern kommer därefter att börja dra kort.",
+                "\nVäljer du 'Hit' kommer du att komma in i 'Hit' sektionen där du får dra kort för att öka dina poäng.",
+                "När du slutar dra kort kommer dealern att dra sina kort",
+                "\nOm du väljer 'Double down' kommer samma sak som hände med 'Hit' att hända, men du dubblar beloppet som du bettar."
+            };
+
+            for (int i = 0; i < info.Length; i++)
+            {
+                Console.WriteLine(info[i]);
+                Thread.Sleep(1000);
+            }
+
+            Console.WriteLine("\n\nKlicka på valfri knapp för att återgå till BlackJack menyn");
+            Console.ReadKey();
+            BlackJack();
         }
 
         static void BlackJack()
@@ -308,8 +300,7 @@ namespace Slutprojektet_PRR1_2020
 
             int.TryParse(Console.ReadLine().Trim(), out int playerInput);
 
-            //Fixa smart kod genom DRY här:
-            while (playerInput != 1 /*&& playerInput != 2*/)
+            while (playerInput != 1 && playerInput != 2)
             {
                 Console.WriteLine("Du har valt ett ogiltigt alternativ, vänligen välj igen");
                 int.TryParse(Console.ReadLine().Trim(), out playerInput);
@@ -322,6 +313,15 @@ namespace Slutprojektet_PRR1_2020
                 Console.Clear();
 
                 PlayBlackJack();
+            }
+
+            else if (playerInput == 2)
+            {
+                Console.WriteLine("Du har valt: " + options[1]);
+                Console.WriteLine("\nDu kommer nu att bli omdirigerad till hur man spelar strax");
+                Console.Clear();
+
+                HowToPlayBlackjack();
             }
 
             Console.WriteLine();
@@ -377,6 +377,12 @@ namespace Slutprojektet_PRR1_2020
             int.TryParse(userInput, out int userInputInt);
 
             return userInputInt;
+        }
+
+        static int PlayerWin(int money)
+        {
+            money = money * 2;
+            return money;
         }
     }   
 }
