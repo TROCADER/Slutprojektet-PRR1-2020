@@ -21,6 +21,16 @@ namespace Slutprojektet_PRR1_2020
 
         static void Main(string[] args)
         {
+            Console.WriteLine(@"
+                                               _             
+                                              (_)            
+                                  ___ __ _ ___ _ _ __   ___  
+                                 / __/ _` / __| | '_ \ / _ \ 
+                                | (_| (_| \__ \ | | | | (_) |
+                                 \___\__,_|___/_|_| |_|\___/ 
+                                                             
+                                ");
+            
             Console.WriteLine("Hej och välkommen till William Casino");
             Console.WriteLine("\nHär kommer du att finna stora chanser att vinna stort och 'små' risker att förlora stort");
             Console.WriteLine("\nVälj det spel ni vill spela:\n");
@@ -73,6 +83,7 @@ namespace Slutprojektet_PRR1_2020
 
             bool isHitting = false;
             bool drawingCards = true;
+            bool wantsToPlay = true;
 
             int[] bettableAmmount =
             {
@@ -85,173 +96,202 @@ namespace Slutprojektet_PRR1_2020
                 1000000
             };
 
-            while (playerPoints < 21 && playerPoints < 21 && drawingCards == true && money > 0)
+            while (wantsToPlay == true)
             {
-                Console.WriteLine("Hur mycket vill du betta?");
-
-                for (int i = 0; i < bettableAmmount.Length; i++)
-                {
-                    Console.WriteLine(bettableAmmount[i]);
-                }
-
-                Console.WriteLine("Skriv det indexvärde till det belopp du önskar betta");
-                string userInput = Console.ReadLine().Trim().ToLower();
-
-                while (userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4" && userInput != "5" && userInput != "6")
-                {
-                    Console.WriteLine("Du har valt ett belopp som inte existerar, vänligen försök igen");
-                    userInput = Console.ReadLine().Trim().ToLower();
-                }
-
-                int.TryParse(userInput, out int userInputInt);
-
-                money = money - bettableAmmount[userInputInt];
-
-                Console.WriteLine("\nDu har: " + money + " pengar kvar");
-                Thread.Sleep(1500);
-                
-                string[] options =
-                {
-                    "1: Hit",
-                    "2: Stand",
-                    "3: Double up"
-                };
-
                 Console.Clear();
-                DrawCard();
-
-                Console.WriteLine("\n\nVad vill du göra?");
-
-                for (int i = 0; i < options.Length; i++)
+                while (playerPoints < 21 && drawingCards == true && money > 0)
                 {
-                    Console.WriteLine(options[i]);
-                }
+                    Console.WriteLine("Hur mycket vill du betta?");
 
-                int.TryParse(Console.ReadLine().Trim(), out int playerInput);
-
-                while (playerInput != 1 && playerInput != 2 && playerInput != 3)
-                {
-                    Console.WriteLine("Du har valt ett ogitigt alternativ, vänligen välj igen");
-                    int.TryParse(Console.ReadLine().Trim(), out playerInput);
-                }
-
-                if (playerInput == 1)
-                {
-                    isHitting = true;
-
-                    while (isHitting == true)
+                    for (int i = 0; i < bettableAmmount.Length; i++)
                     {
-                        if (playerPoints >= 21)
-                        {
-                            isHitting = false;
-                        }
-                        
-                        playerCard = generator.Next(1, 11);
-                        playerPoints = playerPoints + playerCard;
-
-                        Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
-                        Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
-
-                        Console.WriteLine("Vill du fortsätta hit:a?");
-                        Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
-
-                        string playerChoose = Console.ReadLine().Trim().ToLower();
-
-                        while (playerChoose != "n" && playerChoose != "y")
-                        {
-                            Console.WriteLine("\nDu har valt ett ogiltigt alternativ, vänligen försök igen");
-                            playerChoose = Console.ReadLine().Trim().ToLower();
-                        }
-
-                        if (playerChoose == "n")
-                        {
-                            isHitting = false;
-                        }
+                        Console.WriteLine(bettableAmmount[i]);
                     }
-                }
 
-                else if (playerInput == 2)
-                {
-                    Console.WriteLine("Du har valt att stand:a, dealern kommer strax att börja dra kort");
-                    Thread.Sleep(2000);
-                }
+                    Console.WriteLine("Skriv det indexvärde till det belopp du önskar betta");
+                    string userInput = Console.ReadLine().Trim().ToLower();
 
-                else if (playerInput == 3)
-                {
-                    Console.WriteLine("Du har valt att double up:a, det belopp du bettade kommer nu att dubblas");
+                    while (userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4" && userInput != "5" && userInput != "6")
+                    {
+                        Console.WriteLine("Du har valt ett belopp som inte existerar, vänligen försök igen");
+                        userInput = Console.ReadLine().Trim().ToLower();
+                    }
 
-                    int.TryParse(userInput, out userInputInt);
+                    int.TryParse(userInput, out int userInputInt);
 
                     money = money - bettableAmmount[userInputInt];
 
-                    Console.WriteLine("Du har : " + money + " kvar");
-
-                    Thread.Sleep(2000);
+                    Console.WriteLine("\nDu har: " + money + " pengar kvar");
+                    Thread.Sleep(1500);
+                
+                    string[] options =
+                    {
+                        "1: Hit",
+                        "2: Stand",
+                        "3: Double up"
+                    };
 
                     Console.Clear();
-                    isHitting = true;
+                    DrawCard();
 
-                    while (isHitting == true)
+                    Console.WriteLine("\n\nVad vill du göra?");
+
+                    for (int i = 0; i < options.Length; i++)
                     {
-                        if (playerPoints >= 21)
+                        Console.WriteLine(options[i]);
+                    }
+
+                    int.TryParse(Console.ReadLine().Trim(), out int playerInput);
+
+                    while (playerInput != 1 && playerInput != 2 && playerInput != 3)
+                    {
+                        Console.WriteLine("Du har valt ett ogitigt alternativ, vänligen välj igen");
+                        int.TryParse(Console.ReadLine().Trim(), out playerInput);
+                    }
+
+                    if (playerInput == 1)
+                    {
+                        isHitting = true;
+
+                        while (isHitting == true)
                         {
-                            isHitting = false;
-                        }
+                            if (playerPoints >= 21)
+                            {
+                                isHitting = false;
+                            }
+                        
+                            playerCard = generator.Next(1, 11);
+                            playerPoints = playerPoints + playerCard;
 
-                        playerCard = generator.Next(1, 11);
-                        playerPoints = playerPoints + playerCard;
+                            Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
+                            Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
 
-                        Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
-                        Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
+                            Console.WriteLine("Vill du fortsätta hit:a?");
+                            Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
 
-                        Console.WriteLine("Vill du fortsätta hit:a?");
-                        Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
+                            string playerChoose = Console.ReadLine().Trim().ToLower();
 
-                        string playerChoose = Console.ReadLine().Trim().ToLower();
+                            while (playerChoose != "n" && playerChoose != "y")
+                            {
+                                Console.WriteLine("\nDu har valt ett ogiltigt alternativ, vänligen försök igen");
+                                playerChoose = Console.ReadLine().Trim().ToLower();
+                            }
 
-                        while (playerChoose != "n" && playerChoose != "y")
-                        {
-                            Console.WriteLine("\nDu har valt ett ogiltigt alternativ, vänligen försök igen");
-                            playerChoose = Console.ReadLine().Trim().ToLower();
-                        }
-
-                        if (playerChoose == "n")
-                        {
-                            isHitting = false;
+                            if (playerChoose == "n")
+                            {
+                                isHitting = false;
+                            }
                         }
                     }
 
-                    Thread.Sleep(2000);
+                    else if (playerInput == 2)
+                    {
+                        Console.WriteLine("Du har valt att stand:a, dealern kommer strax att börja dra kort");
+                        Thread.Sleep(2000);
+                    }
+
+                    else if (playerInput == 3)
+                    {
+                        Console.WriteLine("Du har valt att double up:a, det belopp du bettade kommer nu att dubblas");
+
+                        StringToInt(userInput);
+
+                        money = money - bettableAmmount[userInputInt];
+
+                        Console.WriteLine("\nDu har : " + money + " kvar");
+
+                        Thread.Sleep(2000);
+
+                        Console.Clear();
+                        isHitting = true;
+
+                        while (isHitting == true)
+                        {
+                            if (playerPoints >= 21)
+                            {
+                                isHitting = false;
+                            }
+
+                            playerCard = generator.Next(1, 11);
+                            playerPoints = playerPoints + playerCard;
+
+                            Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
+                            Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
+
+                            Console.WriteLine("Vill du fortsätta hit:a?");
+                            Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
+
+                            string playerChoose = Console.ReadLine().Trim().ToLower();
+
+                            while (playerChoose != "n" && playerChoose != "y")
+                            {
+                                Console.WriteLine("\nDu har valt ett ogiltigt alternativ, vänligen försök igen");
+                                playerChoose = Console.ReadLine().Trim().ToLower();
+                            }
+
+                            if (playerChoose == "n")
+                            {
+                                isHitting = false;
+                            }
+                        }
+
+                        Thread.Sleep(2000);
+                    }
+
+                    Console.WriteLine("\nDealern kommer nu att börja dra kort\n");
+
+                    while (dealerPoints < 21 && dealerPoints < playerPoints)
+                    {
+                        dealerCard = generator.Next(1, 11);
+                        dealerPoints = dealerPoints + dealerCard;
+
+                        Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
+                        Console.WriteLine("\nDealern har nu " + dealerPoints + " värt i kort");
+
+                        Thread.Sleep(1000);
+                    }
+
+                    if (dealerPoints > 21)
+                    {
+                        Console.WriteLine("\n\nDealern bustade");
+                        Console.WriteLine("\nDu vann omgången!");
+                        money = PlayerWin(money);
+                        Console.WriteLine(money);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("\n\nDealern fick mer mer poäng än dig!");
+                        Console.WriteLine("\nDealern vann omgången!");
+                    }
+
+                    drawingCards = false;
                 }
 
-                Console.WriteLine("\nDealern kommer nu att börja dra kort\n");
+                playerPoints = 0;
+                dealerPoints = 0;
+                drawingCards = true;
 
-                while (dealerPoints < 21 && dealerPoints < playerPoints)
+                Console.WriteLine("Vill du köra igen?");
+                Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
+
+                string continuePlay = Console.ReadLine().Trim().ToLower();
+
+                while (continuePlay != "n" && continuePlay != "y")
                 {
-                    dealerCard = generator.Next(1, 11);
-                    dealerPoints = dealerPoints + dealerCard;
-
-                    Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
-                    Console.WriteLine("\nDealern har nu " + dealerPoints + " värt i kort");
-
-                    Thread.Sleep(1000);
+                    Console.WriteLine("\nDu har valt ett ogiltigt alternativ, vänligen försök igen");
+                    continuePlay = Console.ReadLine().Trim().ToLower();
                 }
 
-                if (dealerPoints > 21)
+                if (continuePlay == "n")
                 {
-                    Console.WriteLine("\n\nDealern bustade");
-                    Console.WriteLine("\nDu vann omgången!");
-                    money = PlayerWin(money);
-                    Console.WriteLine(money);
+                    wantsToPlay = false;
                 }
 
                 else
                 {
-                    Console.WriteLine("\n\nDealern fick mer mer poäng än dig!");
-                    Console.WriteLine("\nDealern vann omgången!");
+                    wantsToPlay = true;
                 }
-
-                drawingCards = false;
             }
         }
 
@@ -266,7 +306,10 @@ namespace Slutprojektet_PRR1_2020
                 "Dealern kommer därefter att börja dra kort.",
                 "\nVäljer du 'Hit' kommer du att komma in i 'Hit' sektionen där du får dra kort för att öka dina poäng.",
                 "När du slutar dra kort kommer dealern att dra sina kort",
-                "\nOm du väljer 'Double down' kommer samma sak som hände med 'Hit' att hända, men du dubblar beloppet som du bettar."
+                "\nOm du väljer 'Double down' kommer samma sak som hände med 'Hit' att hända, men du dubblar beloppet som du bettar.",
+                "\n\nDenna versionen av BlackJack är däremot inte som de andra.",
+                "Normalt sett brukar man vinna den mängd pengar man bettar gånger två, men i denna versionen så vinner man mer destå mindre man bettar, förutom om man inte bettar något.",
+                "Hur detta fungerar tänker jag låta er lösa ut, lycka till!"
             };
 
             for (int i = 0; i < info.Length; i++)
@@ -289,6 +332,17 @@ namespace Slutprojektet_PRR1_2020
                 "1: Börja spela",
                 "2: Lär dig spela"
             };
+
+            Console.WriteLine(@"
+                                 _     _            _    _            _    
+                                | |   | |          | |  (_)          | |   
+                                | |__ | | __ _  ___| | ___  __ _  ___| | __
+                                | '_ \| |/ _` |/ __| |/ / |/ _` |/ __| |/ /
+                                | |_) | | (_| | (__|   <| | (_| | (__|   < 
+                                |_.__/|_|\__,_|\___|_|\_\ |\__,_|\___|_|\_\
+                                                       _/ |                
+                                                      |__/                 
+                            ");
 
             Console.WriteLine("Hej och välkommen till spelet Blackjack!");
             Console.WriteLine("\nVad vill du göra?");
@@ -339,10 +393,6 @@ namespace Slutprojektet_PRR1_2020
             for (int i = 0; i < dots.Length; i++)
             {
                 dots[i] = ".";
-            }
-
-            for (int i = 0; i < dots.Length; i++)
-            {
                 Console.WriteLine(dots[i]);
                 Thread.Sleep(500);
             }
