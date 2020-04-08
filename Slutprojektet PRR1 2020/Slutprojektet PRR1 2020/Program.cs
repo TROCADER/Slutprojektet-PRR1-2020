@@ -57,7 +57,6 @@ namespace Slutprojektet_PRR1_2020
 
             int.TryParse(Console.ReadLine().Trim(), out int playerInput);
 
-            //Fixa smart kod genom DRY här:
             while (playerInput != 1 /*&& playerInput != 2*/)
             {
                 Console.WriteLine("Du har valt ett spel som inte existerar eller är under konstruktion, vänligen välj igen");
@@ -255,7 +254,7 @@ namespace Slutprojektet_PRR1_2020
                     {
                         Console.WriteLine("\n\nDealern bustade");
                         Console.WriteLine("\nDu vann omgången!");
-                        money = PlayerWin(money);
+                        money = PlayerWin(money, userInputInt, bettableAmmount);
                         Console.WriteLine(money);
                     }
 
@@ -307,9 +306,10 @@ namespace Slutprojektet_PRR1_2020
                 "\nVäljer du 'Hit' kommer du att komma in i 'Hit' sektionen där du får dra kort för att öka dina poäng.",
                 "När du slutar dra kort kommer dealern att dra sina kort",
                 "\nOm du väljer 'Double down' kommer samma sak som hände med 'Hit' att hända, men du dubblar beloppet som du bettar.",
-                "\n\nDenna versionen av BlackJack är däremot inte som de andra.",
-                "Normalt sett brukar man vinna den mängd pengar man bettar gånger två, men i denna versionen så vinner man mer destå mindre man bettar, förutom om man inte bettar något.",
-                "Hur detta fungerar tänker jag låta er lösa ut, lycka till!"
+                "\nNär man bettar pengar så kommer den mängden att dras från ditt konto (som börjar på 1000)",
+                "Om man vinner omgången kommer den mängd man bettade att dubblas och läggas till på ditt konto",
+                "Om du förlorar omgången kommer den bettade mängden att inte returneras till dig som spelare, dealern behåller pengarna",
+                "\n\nLycka till! Och spendera inte vårdslöst!"
             };
 
             for (int i = 0; i < info.Length; i++)
@@ -429,9 +429,9 @@ namespace Slutprojektet_PRR1_2020
             return userInputInt;
         }
 
-        static int PlayerWin(int money)
+        static int PlayerWin(int money, int userInputInt, int[] bettableAmmount)
         {
-            money = money * 2;
+            money = money + (bettableAmmount[userInputInt] * 2);
             return money;
         }
     }   
