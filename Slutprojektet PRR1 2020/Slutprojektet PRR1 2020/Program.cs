@@ -9,6 +9,7 @@ namespace Slutprojektet_PRR1_2020
 {
     class Program
     {
+        //Universiella variabler och en generator som används i flera metoder (anledningen till varför dessa ligger utanför metoden)
         static Random generator = new Random();
 
         static int playerPoints = 0;
@@ -21,6 +22,7 @@ namespace Slutprojektet_PRR1_2020
 
         static void Main(string[] args)
         {
+            //Välkomnar användaren och frågar vilket spel som hen vill spela
             Console.WriteLine(@"
                                                _             
                                               (_)            
@@ -35,6 +37,7 @@ namespace Slutprojektet_PRR1_2020
             Console.WriteLine("\nHär kommer du att finna stora chanser att vinna stort och 'små' risker att förlora stort");
             Console.WriteLine("\nVälj det spel ni vill spela:\n");
 
+            //Hoppar till ChooseGame metoden där spelet väljs
             ChooseGame();
 
             Console.WriteLine("Klicka på valfi knapp för att avsluta");
@@ -42,12 +45,14 @@ namespace Slutprojektet_PRR1_2020
         }
         static void ChooseGame()
         {
+            //Här använder jag en array eftersom att det finns en fördefinerat mängd alternativ där användaren inte får utöka/kommer inte utökas senare i programmet
             string[] games =
             {
                 "1: Blackjack",
-                "2: Roulette (inte gjorts, finns här som anternativ för enkel utbyggning programmet"
+                "2: Roulette, går ej att välja (inte gjorts, finns här som anternativ för enkel utbyggning programmet samt för att visa att for for-loopen funkar)"
             };
 
+            //Skriver ut alla alternativ, valde en for loop då man kan utöka arrayen utan att behöva lägga till mycket kod (det är bara att lägga till i arrayen och koden funkar)
             for (int i = 0; i < games.Length; i++)
             {
                 Console.WriteLine(games[i]);
@@ -57,12 +62,14 @@ namespace Slutprojektet_PRR1_2020
 
             int.TryParse(Console.ReadLine().Trim(), out int playerInput);
 
-            while (playerInput != 1 /*&& playerInput != 2*/)
+            //Användaren måste välja ett giltigt spel (ett som existerar)
+            while (playerInput != 1)
             {
                 Console.WriteLine("Du har valt ett spel som inte existerar eller är under konstruktion, vänligen välj igen");
                 int.TryParse(Console.ReadLine().Trim(), out playerInput);
             }
 
+            //Vid valt spel blir spelaren omdirigerad till det valda spelet
             if (playerInput == 1)
             {
                 Console.Clear();
@@ -72,21 +79,22 @@ namespace Slutprojektet_PRR1_2020
                 Thread.Sleep(2000);
                 Console.Clear();
 
-                BlackJack();
+                Blackjack();
             }
         }
 
-        static void PlayBlackJack()
+        static void PlayBlackjack()
         {
-            Random generator = new Random();
-
+            //Startargument som används för att sätta igång while-loopar som existerar i metoden
             bool isHitting = false;
             bool drawingCards = true;
             bool wantsToPlay = true;
 
+            //Här använder jag en array eftersom att det finns en fördefinerat mängd alternativ där användaren inte får utöka/kommer inte utökas senare i programmet
+            //En array med de bettbara beloppen
             int[] bettableAmmount =
             {
-                0,
+                0, //Ifall man bara vill spela, utan risken förlora cash, man kan inte heller vinna något då
                 1,
                 100,
                 1000,
@@ -95,8 +103,10 @@ namespace Slutprojektet_PRR1_2020
                 1000000
             };
 
+            //Sålänge som användaren vill spela spelet kommer spelsektionen att vara aktiv, används för att stänga ner spelet om användaren vill avsluta spelet (så att man kan köra spelet flera gånger)
             while (wantsToPlay == true)
             {
+                //Gör så att man kan betta den valda mängden
                 Console.Clear();
                 while (playerPoints < 21 && drawingCards == true && money > 0)
                 {
@@ -107,22 +117,27 @@ namespace Slutprojektet_PRR1_2020
                         Console.WriteLine(bettableAmmount[i]);
                     }
 
+                    //Här väljer spelaren mängden att betta
                     Console.WriteLine("Skriv det indexvärde till det belopp du önskar betta");
                     string userInput = Console.ReadLine().Trim().ToLower();
 
+                    //Användaren måste välja ett giltigt belopp
                     while (userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4" && userInput != "5" && userInput != "6")
                     {
                         Console.WriteLine("Du har valt ett belopp som inte existerar, vänligen försök igen");
                         userInput = Console.ReadLine().Trim().ToLower();
                     }
 
+                    //Substraherar det bettade beloppet från spelarens pengar
                     int.TryParse(userInput, out int userInputInt);
 
                     money = money - bettableAmmount[userInputInt];
 
                     Console.WriteLine("\nDu har: " + money + " pengar kvar");
                     Thread.Sleep(1500);
-                
+
+                    //Här använder jag en array eftersom att det finns en fördefinerad mängd alternativ där användaren inte får utöka/kommer inte utökas senare i programmet
+                    //Alternativ av utföringbara handlingar
                     string[] options =
                     {
                         "1: Hit",
@@ -130,9 +145,11 @@ namespace Slutprojektet_PRR1_2020
                         "3: Double up"
                     };
 
+                    //Tillkallar DrawCard metoden som drar kort, för att hålla koden "renare"
                     Console.Clear();
                     DrawCard();
 
+                    //Frågar vilken handling spelaren vill utföra, skriver ut alternativen som står i den ovanstående arrayen
                     Console.WriteLine("\n\nVad vill du göra?");
 
                     for (int i = 0; i < options.Length; i++)
@@ -142,12 +159,14 @@ namespace Slutprojektet_PRR1_2020
 
                     int.TryParse(Console.ReadLine().Trim(), out int playerInput);
 
+                    //Spelaren måste välja ett giltigt alternativ
                     while (playerInput != 1 && playerInput != 2 && playerInput != 3)
                     {
                         Console.WriteLine("Du har valt ett ogitigt alternativ, vänligen välj igen");
                         int.TryParse(Console.ReadLine().Trim(), out playerInput);
                     }
 
+                    //Om användaren väljer alternativ 1 ("Hit") så kommer den handligen att utföras
                     if (playerInput == 1)
                     {
                         isHitting = true;
@@ -158,18 +177,22 @@ namespace Slutprojektet_PRR1_2020
                             {
                                 isHitting = false;
                             }
-                        
+
+                            //Drar ett kort till spelaren, görs inte av DrawCard metoden då detta görs bara en gång, istället för flera gånger som DrawCard metoden gör
                             playerCard = generator.Next(1, 11);
                             playerPoints = playerPoints + playerCard;
 
+                            //Säger informationen om kortet
                             Console.WriteLine("Dealern ger dig ett kort, det är värt " + playerCard);
                             Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
 
+                            //Frågar om spelaren vill fortsätta hit:a
                             Console.WriteLine("Vill du fortsätta hit:a?");
                             Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
 
                             string playerChoose = Console.ReadLine().Trim().ToLower();
 
+                            //Spelaren måste välja ett giltigt alternativ
                             while (playerChoose != "n" && playerChoose != "y")
                             {
                                 Console.WriteLine("\nDu har valt ett ogiltigt alternativ, vänligen försök igen");
@@ -183,18 +206,23 @@ namespace Slutprojektet_PRR1_2020
                         }
                     }
 
+                    //Om användaren väljer alternativ 1 ("Stand") så kommer den handligen att utföras
+                    //Om man väljer att stand:a kommer spelaren inte få dra fler kort och det är dealerns tur att dra kort
                     else if (playerInput == 2)
                     {
                         Console.WriteLine("Du har valt att stand:a, dealern kommer strax att börja dra kort");
                         Thread.Sleep(2000);
                     }
 
+                    //Om användaren väljer alternativ 1 ("Double Down") så kommer den handligen att utföras
                     else if (playerInput == 3)
                     {
                         Console.WriteLine("Du har valt att double up:a, det belopp du bettade kommer nu att dubblas");
 
+                        //Tillkallar StringToInt metoden som har userInput som parameter (defineras tidigare)
                         StringToInt(userInput);
 
+                        //Substraherar det bettade beloppet igen (eftersom det är Double Down så bettas det dubbelt)
                         money = money - bettableAmmount[userInputInt];
 
                         Console.WriteLine("\nDu har : " + money + " kvar");
@@ -204,6 +232,7 @@ namespace Slutprojektet_PRR1_2020
                         Console.Clear();
                         isHitting = true;
 
+                        //Resten fungerar som om man skulle hit:a
                         while (isHitting == true)
                         {
                             if (playerPoints >= 21)
@@ -239,6 +268,7 @@ namespace Slutprojektet_PRR1_2020
 
                     Console.WriteLine("\nDealern kommer nu att börja dra kort\n");
 
+                    //Om dealern har mindre kort-poäng än spelaren/dealern ha mindre poäng än 21 (Blackjack) så kommer den att dra kort för att få mer poäng (för att vinna över spelaren)
                     while (dealerPoints < 21 && dealerPoints < playerPoints)
                     {
                         dealerCard = generator.Next(1, 11);
@@ -250,6 +280,7 @@ namespace Slutprojektet_PRR1_2020
                         Thread.Sleep(1000);
                     }
 
+                    //Om dealern får mer än 21 i poäng så förlorar den/hen och spelaren vinner
                     if (dealerPoints > 21)
                     {
                         Console.WriteLine("\n\nDealern bustade");
@@ -258,19 +289,23 @@ namespace Slutprojektet_PRR1_2020
                         Console.WriteLine(money);
                     }
 
+                    //Men spelaren förlorar om dealern får mer poäng än spelaren
                     else
                     {
                         Console.WriteLine("\n\nDealern fick mer mer poäng än dig!");
                         Console.WriteLine("\nDealern vann omgången!");
                     }
 
+                    //Stänger ner loopen
                     drawingCards = false;
                 }
 
+                //Återställer värdena så att man börjar från början, skulle skapa problem man värdena inte återställdes
                 playerPoints = 0;
                 dealerPoints = 0;
                 drawingCards = true;
 
+                //Om spelaren vill spela igen är det bara att svara ja, annars nej och spelet stängs ner
                 Console.WriteLine("Vill du köra igen?");
                 Console.WriteLine("\nSkriv Y för att fortsätta, N för att sluta");
 
@@ -282,11 +317,13 @@ namespace Slutprojektet_PRR1_2020
                     continuePlay = Console.ReadLine().Trim().ToLower();
                 }
 
+                //Stänger ner spelet
                 if (continuePlay == "n")
                 {
                     wantsToPlay = false;
                 }
 
+                //Spelet startas upp igen
                 else
                 {
                     wantsToPlay = true;
@@ -296,6 +333,8 @@ namespace Slutprojektet_PRR1_2020
 
         static void HowToPlayBlackjack()
         {
+            //Här använder jag en array eftersom att det finns en fördefinerat mängd alternativ där användaren inte får utöka/kommer inte utökas senare i programmet
+            //Information om hur man spelar Blackjack, skrivs ut genom en for-loop undertill
             string[] info =
             {
                 "Du kommer nu att lära dig hur man spelar!",
@@ -312,27 +351,31 @@ namespace Slutprojektet_PRR1_2020
                 "\n\nLycka till! Och spendera inte vårdslöst!"
             };
 
+            //Skriver ut informationen som står skriven i arrayen (för enkel utbyggning)
             for (int i = 0; i < info.Length; i++)
             {
                 Console.WriteLine(info[i]);
                 Thread.Sleep(1000);
             }
 
-            Console.WriteLine("\n\nKlicka på valfri knapp för att återgå till BlackJack menyn");
+            Console.WriteLine("\n\nKlicka på valfri knapp för att återgå till Blackjack menyn");
             Console.ReadKey();
-            BlackJack();
+            Blackjack();
         }
 
-        static void BlackJack()
+        static void Blackjack()
         {
+            //La till en loadingscreen för "varför inte?"
             LoadGame();
 
+            //Här använder jag en array eftersom att det finns en fördefinerat mängd alternativ där användaren inte får utöka/kommer inte utökas senare i programmet
             string[] options =
             {
                 "1: Börja spela",
                 "2: Lär dig spela"
             };
 
+            //Välkomnar användaren till Blackjack
             Console.WriteLine(@"
                                  _     _            _    _            _    
                                 | |   | |          | |  (_)          | |   
@@ -347,28 +390,33 @@ namespace Slutprojektet_PRR1_2020
             Console.WriteLine("Hej och välkommen till spelet Blackjack!");
             Console.WriteLine("\nVad vill du göra?");
 
+            //Skriver ut alternativen som användaren har att välja mellan (de står skrivna i en array lite högre upp i koden för enkel utbyggning)
             for (int i = 0; i < options.Length; i++)
             {
                 Console.WriteLine(options[i]);
             }
 
+            //Lite onödig typkonvertering då det funkar lika bra med string argument, men gjorde detta för att få med typkonvertering
             int.TryParse(Console.ReadLine().Trim(), out int playerInput);
 
+            //Måste välja ett giltigt alternativ
             while (playerInput != 1 && playerInput != 2)
             {
                 Console.WriteLine("Du har valt ett ogiltigt alternativ, vänligen välj igen");
                 int.TryParse(Console.ReadLine().Trim(), out playerInput);
             }
 
+            //Spelaren omdirigeras till det faktiska spelet om hen väljer alternativ 1
             if (playerInput == 1)
             {
                 Console.WriteLine("Du har valt: " + options[0]);
                 Console.WriteLine("\nSpelet kommer nu att starta");
                 Console.Clear();
 
-                PlayBlackJack();
+                PlayBlackjack();
             }
 
+            //Spelaren omdirigeras till "hur man spelar" sektionen om hen väljer alternativ 2
             else if (playerInput == 2)
             {
                 Console.WriteLine("Du har valt: " + options[1]);
@@ -386,10 +434,14 @@ namespace Slutprojektet_PRR1_2020
             Console.Clear();
 
             Thread.Sleep(500);
+
+            //Behöver ha en CW som inte ligger i loopen då den ska bara skriva ut en gång
             Console.WriteLine("Loading game, please wait...");
 
+            //Här använder jag en array eftersom att det finns en fördefinerat mängd alternativ där användaren inte får utöka/kommer inte utökas senare i programmet
             string[] dots = new string[5];
 
+            //Skrivar ut 5 punkter som ska symbolisera att programmet laddas in
             for (int i = 0; i < dots.Length; i++)
             {
                 dots[i] = ".";
@@ -400,28 +452,35 @@ namespace Slutprojektet_PRR1_2020
             Console.Clear();
         }
 
+        //En metod som drar korten för både spelaren och dealern
         static void DrawCard()
         {
+            //Valde användningen av en for-loop då mängden gånger den ska köras är fördefinerat (2 i detta fall)
             for (int i = 0; i < 2; i++)
             {
+                //Genererar ett värde för korten
                 playerCard = generator.Next(1, 11);
                 dealerCard = generator.Next(1, 11);
 
+                //Adderar det beloppet till poängsumman
                 playerPoints = playerPoints + playerCard;
                 dealerPoints = dealerPoints + dealerCard;
 
+                //Säger vad kortet var värt
                 Console.WriteLine("\nDealern ger dig ett kort, det är värt " + playerCard);
                 Thread.Sleep(1000);
                 Console.WriteLine("\nDealern ger sig själv ett kort, det är värt " + dealerCard);
                 Thread.Sleep(1000);
             }
 
+            //Säger hur mycket poäng du och dealern har för tillfället
             Console.WriteLine("\nDu har nu " + playerPoints + " värt i kort");
             Thread.Sleep(500);
             Console.WriteLine("\nDealern har nu " + dealerPoints + " värt i kort");
             Thread.Sleep(500);
         }
 
+        //Kom på lite sent att göra en typkonverteringsmetod som ska kunna användas flera gånger, så gjorde en sent istället för aldrig
         static int StringToInt(string userInput)
         {
             int.TryParse(userInput, out int userInputInt);
@@ -429,6 +488,7 @@ namespace Slutprojektet_PRR1_2020
             return userInputInt;
         }
 
+        //En metod som tar hand om bettingen om spelaren vinner (så att spelaren kan vinna pengar genom att spela)
         static int PlayerWin(int money, int userInputInt, int[] bettableAmmount)
         {
             money = money + (bettableAmmount[userInputInt] * 2);
