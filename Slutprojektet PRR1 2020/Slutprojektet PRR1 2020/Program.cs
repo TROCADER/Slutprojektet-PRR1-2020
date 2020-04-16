@@ -285,8 +285,8 @@ namespace Slutprojektet_PRR1_2020
                     {
                         Console.WriteLine("\n\nDealern bustade");
                         Console.WriteLine("\nDu vann omgången!");
-                        money = PlayerWin(money, userInputInt, bettableAmmount);
-                        Console.WriteLine(money);
+                        money = PlayerWin(money, userInputInt, bettableAmmount, playerInput);
+                        Console.WriteLine("Du har nu " + money + " pengar");
                     }
 
                     //Men spelaren förlorar om dealern får mer poäng än spelaren
@@ -489,9 +489,23 @@ namespace Slutprojektet_PRR1_2020
         }
 
         //En metod som tar hand om bettingen om spelaren vinner (så att spelaren kan vinna pengar genom att spela)
-        static int PlayerWin(int money, int userInputInt, int[] bettableAmmount)
+        static int PlayerWin(int money, int userInputInt, int[] bettableAmmount, int playerInput)
         {
-            money = money + (bettableAmmount[userInputInt] * 2);
+            if (playerInput == 1)
+            {
+                money = money + (bettableAmmount[userInputInt] * 2);
+            }
+
+            else if (playerInput == 3)
+            {
+                money = money + (bettableAmmount[userInputInt] * 4);
+            }
+
+            else
+            {
+                money = money + (bettableAmmount[userInputInt] * 2);
+            }
+            
             return money;
         }
     }   
